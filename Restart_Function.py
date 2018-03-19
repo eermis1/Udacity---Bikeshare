@@ -22,10 +22,11 @@ time_period = str(input(
     "So..\n"
     "\nType 'Month' For Monthly Search..\n"
     "Type 'Day' For Daily Search..\n"
+    "Type 'Spesific' For Spesific Date Search..\n"
     "Type 'Both' For Day & Month Combined Search..\n"
     "Type 'None' For No Time Filter..\n")).title()
-while time_period not in ("Month", "Day", "Both", "None"):
-    print("\\Incorrect Selection, Please Type 'Month', 'Day', 'Both', or 'None'\n")
+while time_period not in ("Month", "Day", "Both", "None", "Spesific"):
+    print("\\Incorrect Selection, Please Type 'Month', 'Day', 'Both', 'Spesific' or 'None'\n")
     time_period = str(input()).title()
     print("\n\\Evaluating...")
 else:
@@ -122,6 +123,30 @@ elif time_period == "Both":
                   "Month Option = {}\n"
                   "Perfect !!.. lets See Statistics....\n".format(city, time_period, both_day, both_month))
 
+elif time_period == "Spesific":
+    print("Please Type Date & Month Which You Would Like To Investigate")
+    spesific_day = int(input("First, Enter Month Date Like '15', '20' etc..\n"))
+    while spesific_day < 1 and spesific_day > 31:
+        print("\\Incorrect Selection, Please Type A Number Between 1 - 31....")
+        spesific_day = int(input())
+        print("\\Evaluating...\n")
+    else:
+        print("Perfect!.., 1 Last Question ..\n".format(str(spesific_day).title()))
+        spesific_month= str(
+            input("Type Month For Investigate Like 'January', 'February' etc..\n")).title()
+        while spesific_month not in ("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"):
+            print("\\Incorrect Selection, Please Type 'January', 'February' or etc....")
+            spesific_month = str(input()).title()
+            print("\\Evaluating...\n")
+        else:
+            print("Perfect!.., We Are OK\n")
+            print("Your Selections Are;\n"
+                  "City = {}\n"
+                  "Time Option = {}\n"
+                  "Day Option = {}\n"
+                  "Month Option = {}\n"
+                  "Perfect !!.. lets See Statistics....\n".format(city, time_period, spesific_day, spesific_month))
+
 
 def month_to_int(month):
 
@@ -179,6 +204,34 @@ def month_to_int_both(both_month):
         return 12
 
 
+def month_to_int_spesific(spesific_month):
+
+    if spesific_month == "January":
+        return 1
+    elif spesific_month == "February":
+        return 2
+    elif spesific_month == "March":
+        return 3
+    elif spesific_month == "April":
+        return 4
+    elif spesific_month == "May":
+        return 5
+    elif spesific_month == "June":
+        return 6
+    elif spesific_month == "July":
+        return 7
+    elif spesific_month == "August":
+        return 8
+    elif spesific_month == "September":
+        return 9
+    elif spesific_month == "October":
+        return 10
+    elif spesific_month == "November":
+        return 11
+    elif spesific_month == "December":
+        return 12
+
+
 def city_converter(time_period, city):  # data preperation for further functions
     if time_period == "Month" and city == "Chicago":
         chicago = pd.read_csv("C:/Users/ASUS PC/Desktop/UDACITY/Python Calismalar/Bikeshare/chicago.csv")
@@ -211,6 +264,14 @@ def city_converter(time_period, city):  # data preperation for further functions
         chicago["Start Time_month"] = pd.to_datetime(chicago["Start Time"]).dt.month
         chicago["Start Time"] = pd.to_datetime(chicago["Start Time"]).dt.weekday_name
         chicago["End Time"] = pd.to_datetime(chicago["End Time"]).dt.weekday_name
+        return chicago
+
+    elif time_period == "Spesific" and city == "Chicago":
+        chicago = pd.read_csv("C:/Users/ASUS PC/Desktop/UDACITY/Python Calismalar/Bikeshare/chicago.csv")
+        chicago["End Time_month"] = pd.to_datetime(chicago["End Time"]).dt.month
+        chicago["Start Time_month"] = pd.to_datetime(chicago["Start Time"]).dt.month
+        chicago["Start Time"] = pd.to_datetime(chicago["Start Time"]).dt.day
+        chicago["End Time"] = pd.to_datetime(chicago["End Time"]).dt.day
         return chicago
 
     if time_period == "Month" and city == "New York City":
@@ -246,6 +307,14 @@ def city_converter(time_period, city):  # data preperation for further functions
         new_york_city["End Time"] = pd.to_datetime(new_york_city["End Time"]).dt.weekday_name
         return new_york_city
 
+    elif time_period == "Spesific" and city == "New York City":
+        new_york_city = pd.read_csv("C:/Users/ASUS PC/Desktop/UDACITY/Python Calismalar/Bikeshare/new_york_city.csv")
+        new_york_city["End Time_month"] = pd.to_datetime(new_york_city["End Time"]).dt.month
+        new_york_city["Start Time_month"] = pd.to_datetime(new_york_city["Start Time"]).dt.month
+        new_york_city["Start Time"] = pd.to_datetime(new_york_city["Start Time"]).dt.day
+        new_york_city["End Time"] = pd.to_datetime(new_york_city["End Time"]).dt.day
+        return new_york_city
+
         if time_period == "Month" and city == "Washington":
             washington = pd.read_csv("C:/Users/ASUS PC/Desktop/UDACITY/Python Calismalar/Bikeshare/washington.csv")
             washington["Start Time"] = pd.to_datetime(washington["Start Time"]).dt.month
@@ -277,6 +346,14 @@ def city_converter(time_period, city):  # data preperation for further functions
             washington["Start Time_month"] = pd.to_datetime(washington["Start Time"]).dt.month
             washington["Start Time"] = pd.to_datetime(washington["Start Time"]).dt.weekday_name
             washington["End Time"] = pd.to_datetime(washington["End Time"]).dt.weekday_name
+            return washington
+
+        elif time_period == "Spesific" and city == "Washington":
+            washington = pd.read_csv("C:/Users/ASUS PC/Desktop/UDACITY/Python Calismalar/Bikeshare/washington.csv")
+            washington["End Time_month"] = pd.to_datetime(washington["End Time"]).dt.month
+            washington["Start Time_month"] = pd.to_datetime(washington["Start Time"]).dt.month
+            washington["Start Time"] = pd.to_datetime(washington["Start Time"]).dt.day
+            washington["End Time"] = pd.to_datetime(washington["End Time"]).dt.day
             return washington
 
 
@@ -325,6 +402,8 @@ def populardestination(city_converter):
             print("The Most Popular Destination In City Of {} For The Combination Of {} - {} Is\n".format(city, both_month, both_day).upper(), populardestinationv1.iloc[maxcountofpopulardestination])
         except ValueError:  # some days have not data , to prevent program crash , exception has been made.
             print("No Record For Relevant Date\n".upper())
+
+# elif spesific ekle üsttekinin benzeri
 
 
 print(populardestination(city_converter))
